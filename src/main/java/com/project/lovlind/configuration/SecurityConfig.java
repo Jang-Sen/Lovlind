@@ -44,7 +44,12 @@ public class SecurityConfig {
   private CorsConfigurationSource apiConfigurationSource() {
 
     CorsConfiguration configuration = new CorsConfiguration();
-    configuration.setAllowedOriginPatterns(List.of("http://localhost:[*]", "https://localhost:[*]", "http://www.lovlind.me:[*]", "https://www.lovlind.me:[*]"));
+    configuration.setAllowedOriginPatterns(List.of("http://localhost:[*]"
+            , "https://localhost:[*]"
+            , "http://www.lovlind.me:[*]"
+            , "https://www.lovlind.me:[*]"
+            , "https://loveliend.vercel.app:[*]"
+            , "http://loveliend.vercel.app:[*]"));
     configuration.setAllowedMethods(List.of("GET", "POST", "PATCH", "DELETE", "OPTIONAL", "OPTION"));
     configuration.setAllowCredentials(true);
     configuration.setAllowedHeaders(List.of("*"));
