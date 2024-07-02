@@ -9,6 +9,13 @@ import lombok.NoArgsConstructor;
 public class ChatrommSearchFilter {
   private String search;
   private Integer count;
+  private Integer page;
+  private Integer pageSize;
+
+  public ChatrommSearchFilter(Integer page, Integer pageSize) {
+    this.page = page;
+    this.pageSize = pageSize;
+  }
 
   public boolean isAllSearch() {
     return search == null && count == null;

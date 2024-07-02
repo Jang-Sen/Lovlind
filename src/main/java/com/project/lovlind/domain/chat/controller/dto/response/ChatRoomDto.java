@@ -10,10 +10,13 @@ public class ChatRoomDto {
   private Long id;
   private String title;
   private Integer participantCount;
+  private Integer maxParticipant;
+
 
   public ChatRoomDto(Chatroom entity) {
     this.id = entity.getId();
     this.title = entity.getTitle();
     this.participantCount = entity.getParticipantsList().size();
+    this.maxParticipant = entity.getMaxParticipant();
   }
 }

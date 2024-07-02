@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -52,7 +56,10 @@ public class ChatroomService {
   }
 
   public List<ChatRoomDto> getChatrooms(ChatrommSearchFilter filter) {
-    List<Chatroom> chatrooms = filter.isAllSearch() ? repository.findAll() : repository.findAll();
+
+//    Page<Chatroom> chatrooms = filter.isAllSearch() ? repository.findAll(PageRequest.of(filter.getPage(), 100))
+    Page<Chatroom> chatrooms = repository.findAll(PageRequest.of(filter.getPage() - 1, filter.getPageSize()));
+
     return chatrooms.stream()
             .map(ChatRoomDto::new)
             .collect(Collectors.toList());
@@ -70,7 +77,7 @@ public class ChatroomService {
     return savedEntity.getId();
   }
 
-  public List<ChatRoomDto> getMyChatrooms(Long userId) {
+  public List<ChatRoomDto> getMyChatrooms(Long userId, ChatrommSearchFilter filter) {
     
     // 참여한 방 전채 목록 조회
     List<Participant> joinedChatIds = participantRepository.findByMemberId(userId);
