@@ -65,7 +65,7 @@ public class ChatroomService {
             .collect(Collectors.toList());
   }
 
-  public Long saveChatroom(PostChatDto dto) {
+  public Chatroom saveChatroom(PostChatDto dto) {
     List<ChatroomHobby> requestHobbyList = new ArrayList<>();
 
     Chatroom requestEntity =
@@ -74,7 +74,7 @@ public class ChatroomService {
 
     // Cache 추가
     cacheParticipantRepository.saveRoom(savedEntity.getId());
-    return savedEntity.getId();
+    return savedEntity;
   }
 
   public List<ChatRoomDto> getMyChatrooms(Long userId, ChatrommSearchFilter filter) {

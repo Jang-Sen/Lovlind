@@ -4,9 +4,11 @@ import com.project.lovlind.conmon.requset.dto.CurrentUser;
 import com.project.lovlind.domain.chat.controller.dto.ChatrommSearchFilter;
 import com.project.lovlind.domain.chat.controller.dto.request.PostChatDto;
 import com.project.lovlind.domain.chat.controller.dto.response.ChatRoomDto;
+import com.project.lovlind.domain.chat.entity.Chatroom;
 import com.project.lovlind.domain.chat.service.ChatroomService;
-import java.net.URI;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -34,12 +36,22 @@ public class ChatroomController {
   }
 
   /** 대화방 입장 */
-  //  @PostMapping("/{id}/join")
-  //  public ResponseEntity<Void> joinChatroom(@PathVariable Long id, CurrentUser user) {
-  //    service.joinChatroom(id, user.getUserId());
-  //
-  //    return ResponseEntity.ok().build();
-  //  }
+    @PostMapping("/{chatRoomId}/join")
+    public ResponseEntity<Map<String, Object>> joinChatroom(@PathVariable Long chatRoomId, CurrentUser user) {
+//      service.joinChatroom(id, user.getUserId());
+      // chatRoomId 가 존재하는가? -> 503 에러
+      // chatRoom 에 인원이 꽉차지 않았는가? -> 503 에러
+      // 이미 참여된 사람인가?
+      // TODO : UI / UX  신고 가 3회 이상 누적이면 차단 / 차단유저일 경우 못들어간다.
+      // 응답은.
+      // 최근 목록 필요 없다.
+
+      Map<String, Object> result = new HashMap<>();
+      result.put("chatRoomId", chatRoomId);
+      result.put("userId", user.getUserId());
+
+      return ResponseEntity.ok(result);
+    }
 
   /** 채팅방 나가기 */
   @DeleteMapping("/{id}")
@@ -51,8 +63,17 @@ public class ChatroomController {
 
 
   @PostMapping
-  public ResponseEntity<Void> postChatroom(@RequestBody PostChatDto dto) {
-    Long result = service.saveChatroom(dto);
-    return ResponseEntity.created(URI.create(URL + "/" + result)).build();
+  public ResponseEntity<Map<String, Object>> postChatroom(@RequestBody PostChatDto dto, CurrentUser user) {
+
+    Chatroom chatroomEntity = service.saveChatroom(dto);
+
+    Map<String, Object> result = new HashMap<>();
+    result.put("chatRoomId", chatroomEntity.getId());
+    result.put("title", chatroomEntity.getTitle());
+    result.put("maxParticipant", chatroomEntity.getMaxParticipant());
+
+    // 채팅방을 만들고
+    // 위 가입시 "대화방 입장" 이랑 로직을 잘 정리해서, 입장도 시킨다.
+    return ResponseEntity.ok(result);
   }
 }
