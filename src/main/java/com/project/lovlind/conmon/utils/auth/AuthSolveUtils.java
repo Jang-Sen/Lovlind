@@ -2,7 +2,6 @@ package com.project.lovlind.conmon.utils.auth;
 
 import static com.project.lovlind.conmon.utils.number.NumberUtils.isNumeric;
 
-import com.project.lovlind.conmon.requset.dto.CurrentUser;
 import com.project.lovlind.domain.chat.cache.dto.PrincipalDto;
 import org.springframework.stereotype.Component;
 
@@ -17,12 +16,5 @@ public class AuthSolveUtils {
         .memberId(Long.parseLong(accessToken))
         .nickname("memberStub" + accessToken)
         .build();
-  }
-
-  public CurrentUser findCurrentUser(String accessToken) {
-    if (!isNumeric(accessToken)) {
-      return new CurrentUser(1L);
-    }
-    return new CurrentUser(Long.parseLong(accessToken));
   }
 }
